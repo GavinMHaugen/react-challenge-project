@@ -7,7 +7,6 @@ const mapStateToProps = (state) => {
 }
 
 const PrivateRoute = ({component: Component, auth: { token }, ...rest }) => {
-  console.log(token);
   return (
     <Route { ...rest } render={ props => (
       //if the login token exists then route to the respective component
