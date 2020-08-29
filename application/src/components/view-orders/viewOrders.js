@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Template } from '../../components';
 import { SERVER_IP } from '../../private';
+import { Link } from 'react-router-dom';
 import './viewOrders.css';
+
+const DELETE_ORDER_URL = `${SERVER_IP}/api/delete-order`;
 
 class ViewOrders extends Component {
     state = {
@@ -18,6 +21,24 @@ class ViewOrders extends Component {
                     console.log('Error getting orders');
                 }
             });
+    }
+
+    deleteOrder(id) {
+        fetch(DELETE_ORDER_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                id
+            }),
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log("Success", JSON.stringify(response));
+            window.location.reload();
+        })
+        .catch(error => console.log(error));
     }
 
     render() {
@@ -37,8 +58,8 @@ class ViewOrders extends Component {
                                     <p>Quantity: {order.quantity}</p>
                                  </div>
                                  <div className="col-md-4 view-order-right-col">
-                                     <button className="btn btn-success">Edit</button>
-                                     <button className="btn btn-danger">Delete</button>
+                                     <Link className="btn btn-success" to={`/order/${order._id}`}>Edit</Link>
+                                     <button className="btn btn-danger" onClick={() => this.deleteOrder(order._id)}>Delete</button>
                                  </div>
                             </div>
                         );
