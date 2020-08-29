@@ -8,10 +8,20 @@ const mapActionsToProps = dispatch => ({
   }
 })
 
+const mapStateToProps = (state) => {
+  return { auth: state.auth }
+}
+
 class LoginForm extends Component {
   state = {
     email: "",
     password: "",
+  }
+
+  componentWillReceiveProps (props) {
+    if (props.auth.token) {
+      this.props.onLogin();
+    }
   }
 
   login(e) {
@@ -43,4 +53,4 @@ class LoginForm extends Component {
   }
 }
 
-export default connect(null, mapActionsToProps)(LoginForm);
+export default connect(mapStateToProps, mapActionsToProps)(LoginForm);
